@@ -11,6 +11,7 @@ const tarea = mongoose.Schema({
     enum: ["Completado", "En curso", "Pendiente"],
     default: "Pendiente",
   },
+  encargados: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model("Tarea", tarea);
