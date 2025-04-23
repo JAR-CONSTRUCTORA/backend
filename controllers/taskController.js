@@ -39,4 +39,50 @@ const getTasks = async (req, res) => {
     });
   }
 };
-module.exports = { createTask, getTasks };
+
+const startTask = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const date = new Date();
+    const task = await Task.findByIdAndUpdate(id, {
+      status: "In progress",
+      startDateTime: date,
+    });
+    await task.save();
+    res.json({
+      message: "Task started!",
+    });
+  } catch (error) {
+    res.json({
+      message: error,
+    });
+  }
+};
+
+const endTask = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const endDate = new Date();
+    const task = await Task.findByIdAndUpdate(id, {
+      status: "Completed",
+    });
+    const durationInMinutes = Math.floor(
+      (endDate - task.startDateTime) / 60000
+    );
+    const completedInTime = durationInMinutes <= task.estimatedTime;
+    if (completedInTime === true) {
+      task.endDateTime = endDate;
+      task.completedOnTime = true;
+      await task.save();
+    } else {
+      task.endDateTime = endDate;
+      task.completedOnTime = false;
+      await task.save();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { createTask, getTasks, startTask, endTask };
