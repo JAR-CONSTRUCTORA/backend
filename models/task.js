@@ -12,6 +12,7 @@ const taskSchema = new mongoose.Schema({
     default: "Pending",
   },
   assignees: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+  completedOnTime: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Task", taskSchema);
