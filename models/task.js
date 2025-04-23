@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
-const tarea = mongoose.Schema({
-  descripcion: { type: String },
-  lugar: { type: String },
-  tiempoEstimado: { type: Number },
-  fecha_hora_inicio: { type: Date },
-  fecha_hora_fin: { type: Date },
+const taskSchema = new mongoose.Schema({
+  description: { type: String },
+  location: { type: String },
+  estimatedTime: { type: Number },
+  startDateTime: { type: Date },
+  endDateTime: { type: Date },
   status: {
     type: String,
-    enum: ["Completado", "En curso", "Pendiente"],
-    default: "Pendiente",
+    enum: ["Completed", "In Progress", "Pending"],
+    default: "Pending",
   },
-  encargados: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+  assignees: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
 });
 
-module.exports = mongoose.model("Tarea", tarea);
+module.exports = mongoose.model("Task", taskSchema);
