@@ -1,10 +1,7 @@
 const express = require("express");
+const { login } = require("../controllers/loginController");
 const router = express.Router();
 
-router.get("/", (req, res, next) => {
-  res.json({
-    message: "App funcionando",
-  });
-});
+router.post("", login);
 
 module.exports = router;

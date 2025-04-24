@@ -1,15 +1,15 @@
 const User = require("../models/user");
 
 const createUser = async (req, res) => {
-  const { nombreUsuario, contrasena, nombre, apellido } = req.body;
+  const { username, password, firstName, lastName } = req.body;
   try {
     const newUser = new User({
-      nombreUsuario,
-      contrasena,
-      nombre,
-      apellido,
+      username,
+      password,
+      firstName,
+      lastName,
     });
-    const user = await User.findOne({ nombreUsuario: nombreUsuario });
+    const user = await User.findOne({ username });
     if (user) {
       res.json({
         message: "Usuario ya existe, proba otro nombre de usuario!",
