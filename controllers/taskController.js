@@ -23,10 +23,11 @@ const createTask = async (req, res) => {
 const getTasks = async (req, res) => {
   const { id } = req.params;
   try {
-    const tasks = await Task.findOne({ assignees: id });
+    const tasks = await Task.find({ assignees: id });
+    console.log(tasks);
     if (tasks) {
       res.json({
-        message: tasks,
+        tasks,
       });
     } else {
       res.json({
