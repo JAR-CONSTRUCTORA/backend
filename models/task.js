@@ -8,7 +8,7 @@ const taskSchema = new mongoose.Schema({
   endDateTime: { type: Date },
   status: {
     type: String,
-    enum: ["Completed", "In Progress", "Pending"],
+    enum: ["Completed", "In progress", "Pending"],
     default: "Pending",
   },
   assignees: [{ type: mongoose.Schema.ObjectId, ref: "User" }],

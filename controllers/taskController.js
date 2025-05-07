@@ -60,29 +60,31 @@ const startTask = async (req, res) => {
     });
   }
 };
-
 const endTask = async (req, res) => {
   const { id } = req.params;
+
   try {
     const endDate = new Date();
     const task = await Task.findByIdAndUpdate(id, {
       status: "Completed",
+      endDateTime: endDate,
     });
-    const durationInMinutes = Math.floor(
-      (endDate - task.startDateTime) / 60000
-    );
-    const completedInTime = durationInMinutes <= task.estimatedTime;
-    if (completedInTime === true) {
-      task.endDateTime = endDate;
-      task.completedOnTime = true;
-      await task.save();
-    } else {
-      task.endDateTime = endDate;
-      task.completedOnTime = false;
-      await task.save();
+
+    if (!task) {
+      return res.status(404).json({ message: "Tarea no encontrada" });
     }
+
+    const durationInMilliseconds = endDate - task.startDateTime;
+    const estimatedTimeInMs = task.estimatedTime * 3600000;
+    const completedInTime = durationInMilliseconds <= estimatedTimeInMs;
+
+    task.completedOnTime = completedInTime;
+    await task.save();
+
+    res.status(200).json({ message: "Tarea actualizada correctamente" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Error al actualizar la tarea" });
   }
 };
 
