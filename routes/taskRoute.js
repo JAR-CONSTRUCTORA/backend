@@ -4,11 +4,13 @@ const {
   getTasks,
   startTask,
   endTask,
+  getAllTasks,
 } = require("../controllers/taskController");
 
 const router = express.Router();
 
 router
+  .get("", getAllTasks)
   .get("/getTasks/:id", getTasks)
   .post("/createTask", createTask)
   .put("/startTask/:id", startTask)
