@@ -88,4 +88,22 @@ const endTask = async (req, res) => {
   }
 };
 
-module.exports = { createTask, getTasks, startTask, endTask };
+const getAllTasks = async (req, res) => {
+  try {
+    const allTasks = await Task.find({}).populate(
+      "assignees",
+      "firstName lastName"
+    );
+    if (allTasks) {
+      res.json({
+        allTasks,
+      });
+    }
+  } catch (error) {
+    res.json({
+      error,
+    });
+  }
+};
+
+module.exports = { createTask, getTasks, startTask, endTask, getAllTasks };
