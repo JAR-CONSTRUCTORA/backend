@@ -22,9 +22,10 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   const { id } = req.params;
+  const { status } = req.query;
+  const filter = status ? { assignees: id, status } : { assignees: id };
   try {
-    const tasks = await Task.find({ assignees: id });
-    console.log(tasks);
+    const tasks = await Task.find(filter);
     if (tasks) {
       res.json({
         tasks,
