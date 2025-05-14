@@ -1,15 +1,30 @@
 const Task = require("../models/task");
 
 const createTask = async (req, res) => {
-  const { description, location, estimatedTime, assignees } = req.body;
+  const {
+    estacion,
+    incidencia,
+    description,
+    location,
+    estimatedTime,
+    assignees,
+  } = req.body;
   try {
-    const newTask = new Task({
+    const taskData = {
+      estacion,
       description,
       location,
       estimatedTime,
       assignees,
-    });
+    };
+
+    if (incidencia) {
+      taskData.incidencia = incidencia;
+    }
+
+    const newTask = new Task(taskData);
     await newTask.save();
+
     res.json({
       message: "Tarea creada. Se les notificara a los trabajadores.",
     });
@@ -63,12 +78,13 @@ const startTask = async (req, res) => {
 };
 const endTask = async (req, res) => {
   const { id } = req.params;
-
+  const { note } = req.body;
   try {
     const endDate = new Date();
     const task = await Task.findByIdAndUpdate(id, {
       status: "Completed",
       endDateTime: endDate,
+      note,
     });
 
     if (!task) {
