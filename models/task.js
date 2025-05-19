@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
-  estacion: { type: String },
+  station: { type: String },
   incidencia: { type: Number },
   description: { type: String },
   location: { type: String },
@@ -10,8 +10,8 @@ const taskSchema = new mongoose.Schema({
   endDateTime: { type: Date },
   status: {
     type: String,
-    enum: ["Completed", "In progress", "Pending"],
-    default: "Pending",
+    enum: ["Completada", "En progreso", "Pendiente"],
+    default: "Pendiente",
   },
   note: { type: String },
   assignees: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
