@@ -47,7 +47,7 @@ const getTasks = async (req, res) => {
       });
     } else {
       res.json({
-        message: "No tasks!",
+        message: "No hay tareas registradas",
       });
     }
   } catch (error) {
@@ -63,12 +63,12 @@ const startTask = async (req, res) => {
   try {
     const date = new Date();
     const task = await Task.findByIdAndUpdate(id, {
-      status: "In progress",
+      status: "En progreso",
       startDateTime: date,
     });
     await task.save();
     res.json({
-      message: "Task started!",
+      message: "Se empezo la tarea!",
     });
   } catch (error) {
     res.json({
@@ -82,7 +82,7 @@ const endTask = async (req, res) => {
   try {
     const endDate = new Date();
     const task = await Task.findByIdAndUpdate(id, {
-      status: "Completed",
+      status: "Completada",
       endDateTime: endDate,
       note,
     });
@@ -123,4 +123,39 @@ const getAllTasks = async (req, res) => {
   }
 };
 
-module.exports = { createTask, getTasks, startTask, endTask, getAllTasks };
+const editTask = async (req, res) => {
+  const { id } = req.params;
+  const { description, location, estacion, assignees } = req.body;
+  try {
+    const task = await Task.findById(id);
+    if (task & (task.status === "Completada")) {
+      return res.json({
+        message: "Esta tarea ya se ha realizado, no es posible editar!",
+      });
+    } else {
+      await task.updateOne({
+        description,
+        location,
+        estacion,
+        assignees,
+      });
+      await task.save();
+      res.json({
+        message: "Tarea actualizada correctamente!",
+      });
+    }
+  } catch (error) {
+    res.json({
+      error,
+    });
+  }
+};
+
+module.exports = {
+  createTask,
+  getTasks,
+  startTask,
+  endTask,
+  getAllTasks,
+  editTask,
+};
