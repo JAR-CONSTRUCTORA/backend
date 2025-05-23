@@ -42,4 +42,30 @@ const getWorkers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getWorkers };
+const searchUser = async (req, res) => {
+  const { firstName, lastName } = req.query;
+  console.log(firstName, lastName);
+  const firstNameRegex = new RegExp(`^${firstName}$`, "i");
+  const lastNameRegex = new RegExp(`^${lastName}$`, "i");
+  const query = {};
+  if (firstName) query.firstName = firstNameRegex;
+  if (lastName) query.lastName = lastNameRegex;
+  try {
+    const userFounded = await User.find(query);
+    if (userFounded) {
+      res.json({
+        userFounded,
+      });
+    } else {
+      res.json({
+        message: "No se encontro usuario.",
+      });
+    }
+  } catch (error) {
+    res.json({
+      error,
+    });
+  }
+};
+
+module.exports = { createUser, getWorkers, searchUser };
