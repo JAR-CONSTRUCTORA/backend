@@ -151,6 +151,27 @@ const editTask = async (req, res) => {
   }
 };
 
+const createNote = async (req, res) => {
+  const { id } = req.params;
+  const { idSender, content } = req.body;
+  try {
+    const task = await Task.findByIdAndUpdate(id, {
+      note: {
+        sender: idSender,
+        content,
+      },
+    });
+    await task.save();
+    res.json({
+      message: "Se envio la nota",
+    });
+  } catch (error) {
+    res.json({
+      error,
+    });
+  }
+};
+
 module.exports = {
   createTask,
   getTasks,
@@ -158,4 +179,5 @@ module.exports = {
   endTask,
   getAllTasks,
   editTask,
+  createNote,
 };

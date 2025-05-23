@@ -13,7 +13,10 @@ const taskSchema = new mongoose.Schema({
     enum: ["Completada", "En progreso", "Pendiente"],
     default: "Pendiente",
   },
-  note: { type: String },
+  note: {
+    sender: { type: mongoose.Schema.ObjectId, ref: "User" },
+    content: { type: String },
+  },
   assignees: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
   completedOnTime: { type: Boolean, default: false },
 });
