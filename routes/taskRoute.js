@@ -6,6 +6,7 @@ const {
   endTask,
   getAllTasks,
   editTask,
+  createNote,
   searchIncidence,
 } = require("../controllers/taskController");
 
@@ -18,6 +19,7 @@ router
   .put("/startTask/:id", startTask)
   .put("/endTask/:id", endTask)
   .put("/editTask/:id", editTask)
+  .put("/sendnote/:id", createNote)
   .get("/incidencia/:incidencia", searchIncidence);
 
 module.exports = router;
