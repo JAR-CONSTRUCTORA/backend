@@ -59,7 +59,6 @@ const getTasks = async (req, res) => {
 
 const startTask = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const date = new Date();
     const task = await Task.findByIdAndUpdate(id, {
@@ -171,6 +170,27 @@ const createNote = async (req, res) => {
     });
   }
 };
+    
+const searchIncidence = async (req, res) => {
+  const { incidencia } = req.params;
+  try {
+    const incidenceFounded = await Task.findOne({ incidencia });
+    if (incidenceFounded) {
+      res.json({
+        incidenceFounded,
+      });
+    } else {
+      res.json({
+        message:
+          "No se encontro ninguna incidencia con ese numero. Pruebe otro",
+      });
+    }
+  } catch (error) {
+    res.json({
+      error,
+    });
+  }
+};
 
 module.exports = {
   createTask,
@@ -180,4 +200,5 @@ module.exports = {
   getAllTasks,
   editTask,
   createNote,
+  searchIncidence,
 };

@@ -7,6 +7,7 @@ const {
   getAllTasks,
   editTask,
   createNote,
+  searchIncidence,
 } = require("../controllers/taskController");
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router
   .put("/startTask/:id", startTask)
   .put("/endTask/:id", endTask)
   .put("/editTask/:id", editTask)
-  .put("/sendnote/:id", createNote);
+  .put("/sendnote/:id", createNote)
+  .get("/incidencia/:incidencia", searchIncidence);
 
 module.exports = router;
