@@ -106,10 +106,9 @@ const endTask = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
   try {
-    const allTasks = await Task.find({}).populate(
-      "assignees",
-      "firstName lastName"
-    );
+    const allTasks = await Task.find({})
+      .populate("assignees", "firstName lastName")
+      .populate("note.sender", "firstName lastName");
     if (allTasks) {
       res.json({
         allTasks,
@@ -155,9 +154,11 @@ const createNote = async (req, res) => {
   const { idSender, content } = req.body;
   try {
     const task = await Task.findByIdAndUpdate(id, {
-      note: {
-        sender: idSender,
-        content,
+      $push: {
+        notes: {
+          sender: idSender,
+          content,
+        },
       },
     });
     await task.save();
@@ -170,7 +171,7 @@ const createNote = async (req, res) => {
     });
   }
 };
-    
+
 const searchIncidence = async (req, res) => {
   const { incidencia } = req.params;
   try {
