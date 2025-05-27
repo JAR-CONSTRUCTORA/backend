@@ -108,7 +108,7 @@ const getAllTasks = async (req, res) => {
   try {
     const allTasks = await Task.find({})
       .populate("assignees", "firstName lastName")
-      .populate("note.sender", "firstName lastName");
+      .populate("notes.sender", "firstName lastName");
     if (allTasks) {
       res.json({
         allTasks,
