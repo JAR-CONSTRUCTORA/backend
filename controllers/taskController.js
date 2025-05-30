@@ -2,8 +2,8 @@ const Task = require("../models/task");
 
 const createTask = async (req, res) => {
   const {
-    estacion,
-    incidencia,
+    station,
+    incidence,
     description,
     location,
     estimatedTime,
@@ -11,15 +11,15 @@ const createTask = async (req, res) => {
   } = req.body;
   try {
     const taskData = {
-      estacion,
+      station,
       description,
       location,
       estimatedTime,
       assignees,
     };
 
-    if (incidencia) {
-      taskData.incidencia = incidencia;
+    if (incidence) {
+      taskData.incidence = incidence;
     }
 
     const newTask = new Task(taskData);
@@ -97,7 +97,7 @@ const endTask = async (req, res) => {
     task.completedOnTime = completedInTime;
     await task.save();
 
-    res.status(200).json({ message: "Tarea actualizada correctamente" });
+    res.status(200).json({ task });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error al actualizar la tarea" });
