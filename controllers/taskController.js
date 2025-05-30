@@ -97,7 +97,7 @@ const endTask = async (req, res) => {
     task.completedOnTime = completedInTime;
     await task.save();
 
-    res.status(200).json({ task });
+    res.status(200).json({ message: "Tarea actualizada correctamente" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error al actualizar la tarea" });
@@ -125,23 +125,18 @@ const editTask = async (req, res) => {
   const { id } = req.params;
   const { description, location, estacion, assignees } = req.body;
   try {
-    const task = await Task.findById(id);
-    if (task & (task.status === "Completada")) {
-      return res.json({
-        message: "Esta tarea ya se ha realizado, no es posible editar!",
-      });
-    } else {
-      await task.updateOne({
-        description,
-        location,
-        estacion,
-        assignees,
-      });
-      await task.save();
-      res.json({
-        message: "Tarea actualizada correctamente!",
-      });
-    }
+    const task = await Task.findByIdAndUpdate(id, {
+      description,
+      location,
+      estacion,
+      assignees,
+    }).populate("assignees");
+
+    await task.save();
+    res.json({
+      message: "Tarea actualizada correctamente!",
+      task,
+    });
   } catch (error) {
     res.json({
       error,
