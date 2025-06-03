@@ -125,12 +125,16 @@ const editTask = async (req, res) => {
   const { id } = req.params;
   const { description, location, estacion, assignees } = req.body;
   try {
-    const task = await Task.findByIdAndUpdate(id, {
-      description,
-      location,
-      estacion,
-      assignees,
-    }).populate("assignees");
+    const task = await Task.findByIdAndUpdate(
+      id,
+      {
+        description,
+        location,
+        estacion,
+        assignees,
+      },
+      { new: true }
+    ).populate("assignees");
 
     await task.save();
     res.json({

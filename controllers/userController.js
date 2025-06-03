@@ -43,13 +43,13 @@ const getWorkers = async (req, res) => {
 };
 
 const searchUser = async (req, res) => {
-  const { firstName, lastName } = req.query;
-  console.log(firstName, lastName);
-  const firstNameRegex = new RegExp(`^${firstName}$`, "i");
-  const lastNameRegex = new RegExp(`^${lastName}$`, "i");
+  const { completeName } = req.query;
+  const [firstName, lastName] = completeName.split(" ");
+  const regexFirstName = new RegExp(`^${firstName}$`, "i");
+  const regexLastName = new RegExp(`^${lastName}$`, "i");
   const query = {};
-  if (firstName) query.firstName = firstNameRegex;
-  if (lastName) query.lastName = lastNameRegex;
+  if (firstName) query.firstName = regexFirstName;
+  if (lastName) query.lastName = regexLastName;
   try {
     const userFounded = await User.find(query);
     if (userFounded) {
