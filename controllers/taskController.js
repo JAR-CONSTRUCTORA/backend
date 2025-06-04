@@ -174,7 +174,7 @@ const createNote = async (req, res) => {
 const searchIncidence = async (req, res) => {
   const { incidencia } = req.params;
   try {
-    const incidenceFounded = await Task.findOne({ incidencia });
+    const incidenceFounded = await Task.findOne({ incidence: incidencia });
     if (incidenceFounded) {
       res.json({
         incidenceFounded,
