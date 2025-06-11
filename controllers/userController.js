@@ -2,12 +2,16 @@ const User = require("../models/user");
 
 const createUser = async (req, res) => {
   const { username, password, firstName, lastName } = req.body;
+  const formattedFirstName =
+    firstName.charAt(0).toUppercase() + firstName.slice(1).toLowerCase();
+  const formattedLastName =
+    lastName.charAt(0).toUppercase() + lastName.slice(1).toLowerCase();
   try {
     const newUser = new User({
       username,
       password,
-      firstName,
-      lastName,
+      firstName: formattedFirstName,
+      lastName: formattedLastName,
     });
     const user = await User.findOne({ username });
     if (user) {
