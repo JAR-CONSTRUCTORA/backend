@@ -2,10 +2,12 @@ const User = require("../models/user");
 
 const createUser = async (req, res) => {
   const { username, password, firstName, lastName } = req.body;
+
   const formattedFirstName =
-    firstName.charAt(0).toUppercase() + firstName.slice(1).toLowerCase();
+    firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
   const formattedLastName =
-    lastName.charAt(0).toUppercase() + lastName.slice(1).toLowerCase();
+    lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase();
+
   try {
     const newUser = new User({
       username,
@@ -48,12 +50,17 @@ const getWorkers = async (req, res) => {
 
 const searchUser = async (req, res) => {
   const { completeName } = req.query;
+
   const [firstName, lastName] = completeName.split(" ");
+
   const regexFirstName = new RegExp(`^${firstName}$`, "i");
   const regexLastName = new RegExp(`^${lastName}$`, "i");
+
   const query = {};
+
   if (firstName) query.firstName = regexFirstName;
   if (lastName) query.lastName = regexLastName;
+
   try {
     const userFounded = await User.find(query);
     if (userFounded) {
@@ -74,11 +81,14 @@ const searchUser = async (req, res) => {
 
 const unsuscribeUser = async (req, res) => {
   const { id } = req.params;
+
   try {
     const userToUnsuscribe = await User.findByIdAndUpdate(id, {
       active: false,
     });
+
     await userToUnsuscribe.save();
+
     res.json({
       message: "Se dio de baja al usuario!",
     });

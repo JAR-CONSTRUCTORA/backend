@@ -12,6 +12,6 @@ router
   .post("/createUser", createUser)
   .get("/workers", getWorkers)
   .get("/search", searchUser)
-  .put("/user/:id", unsuscribeUser);
+  .put("/unsubscribe/:id", unsuscribeUser);
 
 module.exports = router;
