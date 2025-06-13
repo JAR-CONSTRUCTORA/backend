@@ -33,7 +33,7 @@ const createUser = async (req, res) => {
 
 const getWorkers = async (req, res) => {
   try {
-    const workers = await User.find({ role: "Employee" });
+    const workers = await User.find({ role: "Employee", active: true });
     if (workers) {
       res.json({
         workers,
@@ -72,4 +72,21 @@ const searchUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getWorkers, searchUser };
+const unsuscribeUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userToUnsuscribe = await User.findByIdAndUpdate(id, {
+      active: false,
+    });
+    await userToUnsuscribe.save();
+    res.json({
+      message: "Se dio de baja al usuario!",
+    });
+  } catch (error) {
+    res.json({
+      error,
+    });
+  }
+};
+
+module.exports = { createUser, getWorkers, searchUser, unsuscribeUser };
