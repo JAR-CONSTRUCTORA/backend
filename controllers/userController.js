@@ -99,4 +99,21 @@ const unsuscribeUser = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getWorkers, searchUser, unsuscribeUser };
+const getUnsubscribedUsers = async (req, res) => {
+  try {
+    const usersUnsubscribed = await User.find({ active: true });
+    res.json({
+      usersUnsubscribed,
+    });
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
+module.exports = {
+  createUser,
+  getWorkers,
+  searchUser,
+  unsuscribeUser,
+  getUnsubscribedUsers,
+};
