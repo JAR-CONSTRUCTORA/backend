@@ -37,8 +37,11 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   const { id } = req.params;
-  const { status } = req.query;
+  const { status, incidence } = req.query;
   const filter = status ? { assignees: id, status } : { assignees: id };
+  if (incidence === "true") {
+    filter.incidence = { $gt: 0 };
+  }
   try {
     const tasks = await Task.find(filter);
     if (tasks) {
