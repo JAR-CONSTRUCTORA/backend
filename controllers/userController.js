@@ -34,8 +34,9 @@ const createUser = async (req, res) => {
 };
 
 const getWorkers = async (req, res) => {
+  const { active } = req.query;
   try {
-    const workers = await User.find({ role: "Employee", active: true });
+    const workers = await User.find({ role: "Employee", active: active });
     if (workers) {
       res.json({
         workers,
